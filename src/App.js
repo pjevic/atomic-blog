@@ -1,12 +1,13 @@
 /** @format */
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, createContext } from "react";
 import { faker } from "@faker-js/faker";
 
 import Header from "./components/Header/Header";
 import Main from "./components/Main/Main";
 import Archive from "./components/Archive/Archive";
 import Footer from "./components/Footer/Footer";
+import SearchPosts from "./components/Searchposts/SearchPosts";
 
 function createRandomPost() {
   return {
@@ -14,6 +15,9 @@ function createRandomPost() {
     body: faker.hacker.phrase(),
   };
 }
+
+// 1. Create a context
+const PostContext = createContext();
 
 function App() {
   const [posts, setPosts] = useState(() =>
@@ -47,24 +51,35 @@ function App() {
   );
 
   return (
-    <section>
-      <button
-        onClick={() => setIsFakeDark((isFakeDark) => !isFakeDark)}
-        className="btn-fake-dark-mode"
-      >
-        {isFakeDark ? "☀️" : "🌙"}
-      </button>
+    // 2. Provide value to the child components
+    <PostContext.Provider
+      value={{
+        posts: searchedPosts,
+        onClearPosts: handleClearPosts,
+        onAddPost: handleAddPost,
+        searchQuery,
+        setSearchQuery,
+      }}
+    >
+      <section>
+        <button
+          onClick={() => setIsFakeDark((isFakeDark) => !isFakeDark)}
+          className="btn-fake-dark-mode"
+        >
+          {isFakeDark ? "☀️" : "🌙"}
+        </button>
 
-      <Header
-        posts={searchedPosts}
-        onClearPosts={handleClearPosts}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-      />
-      <Main posts={searchedPosts} onAddPost={handleAddPost} />
-      <Archive onAddPost={handleAddPost} />
-      <Footer />
-    </section>
+        <Header
+          posts={searchedPosts}
+          onClearPosts={handleClearPosts}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+        />
+        <Main posts={searchedPosts} onAddPost={handleAddPost} />
+        <Archive onAddPost={handleAddPost} />
+        <Footer />
+      </section>
+    </PostContext.Provider>
   );
 }
 
