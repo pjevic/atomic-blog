@@ -9,8 +9,15 @@ This repository documents advanced React concepts I am learning from my favorite
     - [Core Concepts](#core-concepts)
   - [Implementing Context API](#implementing-context-api)
     - [1. **Create a context**](#1-create-a-context)
-    - [2. **PProvide a value to** to child components](#2-pprovide-a-value-to-to-child-components)
+    - [2. **Provide a value to** to child components](#2-provide-a-value-to-to-child-components)
     - [3. **Consuming the context value**](#3-consuming-the-context-value)
+  - [Advanced Context API Pattern](#advanced-context-api-pattern)
+    - [Custom Provider and Custom Hook](#custom-provider-and-custom-hook)
+    - [Implementation](#implementation)
+      - [**1. Define a Custom Provider**](#1-define-a-custom-provider)
+      - [**2. Create a Custom Hook**](#2-create-a-custom-hook)
+    - [Usage of the Custom Provider and Hook](#usage-of-the-custom-provider-and-hook)
+      - [**Consume the Context with the Custom Hook**](#consume-the-context-with-the-custom-hook)
 
 ---
 
@@ -43,7 +50,7 @@ import { createContext } from "react";
 export const PostContext = createContext();
 ```
 
-### 2. **PProvide a value to** to child components
+### 2. **Provide a value to** to child components
 
 Wrap the relevant part of your app with the `PostContext.Provider`, passing in the shared `value`. This makes the `value` accessible to any child component that consumes the context:
 
@@ -87,3 +94,72 @@ export default function Header() {
 ```
 
 ---
+
+## Advanced Context API Pattern
+
+### Custom Provider and Custom Hook
+
+This advanced pattern simplifies the use of the Context API by creating a **Custom Provider** and a **Custom Hook**. It abstracts the context logic, making it reusable and easier to consume throughout the app.
+
+---
+
+### Implementation
+
+#### **1. Define a Custom Provider**
+
+The `PostProvider` wraps the component tree and provides shared context values. This allows all child components to access the `onClearPosts` function:
+
+```jsx
+import { useState, createContext, useContext } from "react";
+
+const PostContext = createContext();
+
+function PostProvider({ children }) {
+  function handleClearPosts() {
+    setPosts([]);
+  }
+
+  return (
+    <PostContext.Provider
+      value={{
+        onClearPosts: handleClearPosts,
+      }}
+    >
+      {children}
+    </PostContext.Provider>
+  );
+}
+```
+
+#### **2. Create a Custom Hook**
+
+The `usePosts` hook simplifies the consumption of the `PostContext` by eliminating the need to use `useContext` directly in each component. Instead, components can import and use this hook for better readability and reuse:
+
+```jsx
+function usePosts() {
+  const context = useContext(PostContext);
+  return context;
+}
+
+export { PostProvider, usePosts };
+```
+
+### Usage of the Custom Provider and Hook
+
+#### **Consume the Context with the Custom Hook**
+
+Use the `usePosts` hook in child components to access the context values:
+
+```jsx
+import { usePosts } from "../../PostContext";
+
+export default function Header() {
+  const { onClearPosts } = usePosts();
+
+  return (
+    <header>
+      <button onClick={onClearPosts}>Clear posts</button>
+    </header>
+  );
+}
+```

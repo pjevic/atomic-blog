@@ -1,10 +1,10 @@
 /** @format */
 
-import { useState, useContext } from "react";
-import { PostContext } from "../../App";
+import { useState } from "react";
+import { usePosts } from "../../PostContext";
 
 export default function Archive() {
-  const { createRandomPost } = useContext(PostContext);
+  const { createRandomPost } = usePosts();
 
   const [posts] = useState(() =>
     Array.from({ length: 10000 }, () => createRandomPost())

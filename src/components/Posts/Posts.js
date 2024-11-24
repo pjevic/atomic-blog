@@ -1,12 +1,11 @@
 /** @format */
 
-import { useContext } from "react";
-import { PostContext } from "../../App";
+import { usePosts } from "../../PostContext";
 
 import List from "../List/List";
 
 export default function Posts() {
-  const { posts } = useContext(PostContext);
+  const { posts } = usePosts();
 
   return (
     <section>
