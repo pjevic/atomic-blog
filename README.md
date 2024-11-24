@@ -7,10 +7,10 @@ This repository documents advanced React concepts I am learning from my favorite
 - [Atomic Blog](#atomic-blog)
   - [Context API: Simplifying State Management](#context-api-simplifying-state-management)
     - [Core Concepts](#core-concepts)
-  - [Implementing Context API](#implementing-context-api)
-    - [1. Create a context](#1-create-a-context)
-    - [2. Provide a value to\*\* to child components](#2-provide-a-value-to-to-child-components)
-    - [3. Consuming the context value](#3-consuming-the-context-value)
+    - [Implementing Context API](#implementing-context-api)
+      - [1. Create a context](#1-create-a-context)
+      - [2. Provide a value to\*\* to child components](#2-provide-a-value-to-to-child-components)
+      - [3. Consuming the context value](#3-consuming-the-context-value)
   - [Advanced Context API Pattern](#advanced-context-api-pattern)
     - [Custom Provider and Custom Hook](#custom-provider-and-custom-hook)
     - [Implementation](#implementation)
@@ -36,9 +36,9 @@ The Context API provides a streamlined way to share data across your React appli
 3. **Consumers**  
    `Consumers` are components that utilize the provided context to access and use the shared data. By subscribing to the context, they dynamically respond to updates in the `value`.
 
-## Implementing Context API
+### Implementing Context API
 
-### 1. Create a context
+#### 1. Create a context
 
 Define a new context using the `createContext` function:
 
@@ -48,7 +48,7 @@ import { createContext } from "react";
 export const PostContext = createContext();
 ```
 
-### 2. Provide a value to\*\* to child components
+#### 2. Provide a value to\*\* to child components
 
 Wrap the relevant part of your app with the `PostContext.Provider`, passing in the shared `value`. This makes the `value` accessible to any child component that consumes the context:
 
@@ -72,7 +72,7 @@ function App() {
 }
 ```
 
-### 3. Consuming the context value
+#### 3. Consuming the context value
 
 Use the `useContext` hook to access the provided context in a child component, like `Header`. Import the `PostContext` and use it as follows:
 
