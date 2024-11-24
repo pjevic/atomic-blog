@@ -1,6 +1,10 @@
 /** @format */
+import { useContext } from "react";
+import { PostContext } from "../../App";
 
-export default function List({ posts }) {
+export default function List() {
+  const { posts } = useContext(PostContext);
+
   return (
     <ul>
       {posts.map((post, i) => (
