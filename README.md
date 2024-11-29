@@ -18,6 +18,7 @@ This repository documents advanced React concepts I am learning from my favorite
       - [2. Create a Custom Hook](#2-create-a-custom-hook)
     - [Usage of the Custom Provider and Hook](#usage-of-the-custom-provider-and-hook)
       - [Consume the Context with the Custom Hook](#consume-the-context-with-the-custom-hook)
+  - [When Does A Component Instance Re-Render?](#when-does-a-component-instance-re-render)
   - [Dependencies](#dependencies)
   - [Conclusion](#conclusion)
 
@@ -163,6 +164,20 @@ export default function Header() {
   );
 }
 ```
+
+## When Does A Component Instance Re-Render?
+
+ONLY in 3 different situations:
+
+1. 🧠 When the component state changes
+2. 🌐 When there is a change in the context that the component is subscribed to
+3. 👨‍👩‍👧 When the parent component re-renders
+   - common misconception: Component re-renders when its props change.
+     - Props only change when parent rerenders, but when the parent re-renders, any child component receiving the prop will re-render.
+
+- ❗️ A render does NOT mean that the DOM actually gets updated, it just means the component function gets called.
+  **wasted render** a render that didn't produce any change in the DOM
+- ❗️ When passing a component as a `{children}` that it will NOT cause to re-render when its parent re-renders
 
 ## Dependencies
 
